@@ -200,16 +200,8 @@ footer{
 
 <section class="container">
 
-<div class="products">
-  <div class="card"><img src="https://k.top4top.io/p_3672h4iqx1.jpg"><div class="overlay"><div><h3>بقلاوة فاخرة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
-  <div class="card"><img src="https://a.top4top.io/p_3672mjfqq3.jpg"><div class="overlay"><div><h3>بقلاوة بالمكسرات</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
-  <div class="card"><img src="https://l.top4top.io/p_3672kvs1b2.jpg"><div class="overlay"><div><h3>بقلاوة فاخرة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
-  <div class="card"><img src="https://a.top4top.io/p_3672utvld3.jpg"><div class="overlay"><div><h3>بقلاوة مميزة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
-  <div class="card"><img src="https://c.top4top.io/p_3672ujl8e5.jpg"><div class="overlay"><div><h3>بقلاوة فاخرة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
-  <div class="card"><img src="https://g.top4top.io/p_3672spbwx0.jpg"><div class="overlay"><div><h3>بقلاوة جديدة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
-  <div class="card"><img src="https://h.top4top.io/p_3672puilc1.jpg"><div class="overlay"><div><h3>بقلاوة جديدة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
-  <div class="card"><img src="https://i.top4top.io/p_3672fdqs02.jpg"><div class="overlay"><div><h3>بقلاوة جديدة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
-  <div class="card"><img src="https://j.top4top.io/p_3672vzk6s3.jpg"><div class="overlay"><div><h3>بقلاوة جديدة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
+<div class="products" id="productsContainer">
+  <!-- سيتم تحميل المنتجات هنا من Firebase -->
 </div>
 
 <div class="extra-actions">
@@ -232,6 +224,32 @@ footer{
 <footer>
 © 2026 𐙚 أم نوسه للبقلاوة 𐙚 – جميع الحقوق محفوظة
 </footer>
+
+<!-- الربط مع Firebase -->
+<script type="module">
+import { db, ref, onValue } from './firebase.js';
+
+const container = document.getElementById("productsContainer");
+
+// تحميل المنتجات من Firebase تلقائيًا مع الحفاظ على كل المنتجات الحالية
+onValue(ref(db, "products"), snapshot => {
+    container.innerHTML = "";
+    snapshot.forEach(child => {
+        const prod = child.val();
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${prod.image}">
+          <div class="overlay">
+            <div>
+              <h3>${prod.name}</h3>
+              <a href="https://wa.me/218928486845">اطلب الآن</a>
+            </div>
+          </div>`;
+        container.appendChild(card);
+    });
+});
+</script>
 
 </body>
 </html>

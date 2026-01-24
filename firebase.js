@@ -1,12 +1,17 @@
-import { db, ref, onValue } from './firebase.js';
-const container = document.getElementById("productsContainer");
-onValue(ref(db, "products"), snapshot => {
-    container.innerHTML = ""; // تفريغ المحتوى
-    snapshot.forEach(child => {
-        const prod = child.val();
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<img src="${prod.image}"><div class="overlay"><div><h3>${prod.name}</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div>`;
-        container.appendChild(card);
-    });
-});
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-app.js";
+import { getDatabase, ref, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBbMdjtZ5xUpiUDl0EgtO7Ek9d7-12-tAw",
+  authDomain: "om-nosa-baklava.firebaseapp.com",
+  databaseURL: "https://om-nosa-baklava-default-rtdb.firebaseio.com",
+  projectId: "om-nosa-baklava",
+  storageBucket: "om-nosa-baklava.firebasestorage.app",
+  messagingSenderId: "768849634836",
+  appId: "1:768849634836:web:f961dc50cf2caea9ab2901"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+export { db, ref, push, remove, onValue };

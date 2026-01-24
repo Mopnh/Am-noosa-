@@ -4,70 +4,214 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>لوحة إضافة المنتجات المطورة أم الحارث 🎀💎</title>
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, sans-serif;}
-body{background:url("https://f.top4top.io/p_3674fjruu0.jpg") center/cover no-repeat;color:#fff;min-height:100vh;}
-header{text-align:center;padding:20px;}
-header h1{font-size:32px;color:#d4af37;background:rgba(0,0,0,0.7);padding:12px 30px;border-radius:25px;box-shadow:0 0 30px rgba(212,175,55,.8);}
-.container{max-width:1200px;margin:20px auto;padding:0 20px;}
-form{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:30px;justify-content:center;}
-form input{padding:12px 15px;border-radius:12px;border:none;font-size:18px;width:250px;}
-form button{padding:12px 25px;border-radius:25px;border:none;background:#d4af37;color:#000;font-weight:900;font-size:18px;cursor:pointer;box-shadow:0 0 15px #ffd700,0 0 30px #ffd700 inset;transition:0.3s;}
-form button:hover{background:#ffd700;}
-.products-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
-.product-item{position:relative;background:rgba(0,0,0,.6);border-radius:22px;overflow:hidden;box-shadow:0 20px 40px rgba(212,175,55,.25);text-align:center;}
-.product-item img{width:100%;height:220px;object-fit:cover;}
-.product-item span{display:block;padding:10px;font-size:20px;color:#ffd700;font-weight:700;}
-.delete-btn{position:absolute;top:10px;right:10px;padding:6px 14px;border:none;border-radius:20px;background:#ff0000;color:#fff;font-weight:700;cursor:pointer;box-shadow:0 0 10px #ff0000;}
-.delete-btn:hover{background:#ff4444;}
-footer{text-align:center;padding:20px;margin-top:30px;background:#000;color:#777;border-top:1px solid #d4af37;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', Tahoma, sans-serif;
+}
+body{
+  color:#fff;
+  background:url("https://f.top4top.io/p_3674fjruu0.jpg") center/cover no-repeat;
+  overflow-x:hidden;
+  padding-bottom:40px;
+}
+header{
+  text-align:center;
+  padding:20px 0 10px;
+}
+header h1{
+  font-size:28px;
+  color:#d4af37;
+  background:rgba(0,0,0,.6);
+  padding:10px 26px;
+  border-radius:22px;
+  box-shadow:0 0 30px rgba(212,175,55,.8);
+}
+form{
+  max-width:600px;
+  margin:25px auto;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+}
+form input, form button{
+  padding:10px 14px;
+  border-radius:12px;
+  border:none;
+  font-size:16px;
+}
+form button{
+  background:#d4af37;
+  color:#000;
+  font-weight:900;
+  cursor:pointer;
+}
+.products{
+  max-width:1200px;
+  margin:30px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+.card{
+  position:relative;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 20px 40px rgba(212,175,55,.25);
+  transition:0.3s;
+}
+.card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+.overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.85), transparent);
+  opacity:0;
+  transition:.5s;
+  display:flex;
+  align-items:flex-end;
+  padding:15px;
+}
+.card:hover .overlay{opacity:1}
+.overlay h3{
+  color:#ffd700;
+  font-size:20px;
+}
+.overlay button{
+  margin-top:8px;
+  padding:6px 18px;
+  border:1px solid #ffd700;
+  border-radius:22px;
+  background:rgba(0,0,0,0.2);
+  color:#ffd700;
+  font-weight:700;
+  cursor:pointer;
+}
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+.modal{
+  background:#000;
+  padding:25px 35px;
+  border-radius:22px;
+  box-shadow:0 0 30px #d4af37;
+  text-align:center;
+}
+.modal input{
+  padding:10px;
+  margin-top:12px;
+  width:200px;
+  border-radius:12px;
+  border:none;
+}
+.modal button{
+  margin-top:12px;
+  padding:10px 20px;
+  border:none;
+  border-radius:12px;
+  background:#d4af37;
+  font-weight:900;
+  cursor:pointer;
+}
 </style>
 </head>
+
 <body>
 
 <header>
   <h1>لوحة إضافة المنتجات المطورة أم الحارث 🎀💎</h1>
 </header>
 
-<div class="container">
+<!-- نافذة كلمة المرور -->
+<div class="modal-bg" id="passwordModal">
+  <div class="modal">
+    <h2>أدخل كلمة المرور</h2>
+    <input type="password" id="adminPassword" placeholder="كلمة المرور">
+    <br>
+    <button id="loginBtn">دخول</button>
+  </div>
+</div>
+
+<!-- نموذج إضافة المنتج -->
 <form id="addProductForm">
   <input type="text" id="productName" placeholder="اسم المنتج" required>
   <input type="text" id="productImage" placeholder="رابط صورة المنتج" required>
   <button type="submit">إضافة المنتج</button>
 </form>
 
-<div class="products-list" id="productsList"></div>
-</div>
-
-<footer>
-© 2026 𐙚 أم نوسه للبقلاوة 𐙚 – لوحة الادمن
-</footer>
+<!-- عرض المنتجات -->
+<div class="products" id="productsList"></div>
 
 <script type="module">
 import { db, ref, push, onValue, remove } from './firebase.js';
+
+// 🔑 كلمة المرور
+const PASSWORD = "AmHarith2026";
+
+const modal = document.getElementById("passwordModal");
+const loginBtn = document.getElementById("loginBtn");
+const passwordInput = document.getElementById("adminPassword");
 
 const form = document.getElementById("addProductForm");
 const nameInput = document.getElementById("productName");
 const imageInput = document.getElementById("productImage");
 const productsList = document.getElementById("productsList");
 
-form.addEventListener("submit", e => {
-    e.preventDefault();
-    push(ref(db,"products"), { name: nameInput.value, image: imageInput.value });
-    nameInput.value = "";
-    imageInput.value = "";
+// إخفاء النموذج قبل تسجيل الدخول
+form.style.display = "none";
+productsList.style.display = "none";
+
+// التحقق من كلمة المرور
+loginBtn.addEventListener("click", () => {
+  if(passwordInput.value === PASSWORD){
+    modal.style.display = "none";
+    form.style.display = "flex";
+    productsList.style.display = "grid";
+    loadProducts();
+  }else{
+    alert("كلمة المرور خاطئة!");
+    passwordInput.value = "";
+  }
 });
 
-onValue(ref(db,"products"), snapshot => {
+// تحميل المنتجات من Firebase
+function loadProducts(){
+  onValue(ref(db,"products"), snapshot => {
     productsList.innerHTML = "";
     snapshot.forEach(child => {
-        const prod = child.val();
-        const div = document.createElement("div");
-        div.className = "product-item";
-        div.innerHTML = `<img src="${prod.image}"><span>${prod.name}</span><button class="delete-btn">حذف</button>`;
-        div.querySelector(".delete-btn").onclick = () => remove(ref(db,"products/"+child.key));
-        productsList.appendChild(div);
+      const prod = child.val();
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${prod.image}">
+        <div class="overlay">
+          <h3>${prod.name}</h3>
+          <button class="delete-btn">حذف</button>
+        </div>`;
+      card.querySelector(".delete-btn").onclick = () => remove(ref(db,"products/"+child.key));
+      productsList.appendChild(card);
     });
+  });
+}
+
+// إضافة منتج جديد
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  push(ref(db,"products"), { name: nameInput.value, image: imageInput.value });
+  nameInput.value = "";
+  imageInput.value = "";
 });
 </script>
 

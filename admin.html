@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة إضافة المنتجات المطورة أم الحارث 🎀💎</title>
+<title>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</title>
 
 <style>
 *{
@@ -13,59 +13,116 @@
   font-family:'Segoe UI', Tahoma, sans-serif;
 }
 body{
+  background:#111 url("https://f.top4top.io/p_3674fjruu0.jpg") center/cover no-repeat;
   color:#fff;
-  background:url("https://f.top4top.io/p_3674fjruu0.jpg") center/cover no-repeat;
-  overflow-x:hidden;
   padding-bottom:40px;
 }
+
+/* Header */
 header{
   text-align:center;
-  padding:20px 0 10px;
+  padding:15px 0;
 }
 header h1{
-  font-size:28px;
+  font-size:24px;
   color:#d4af37;
-  background:rgba(0,0,0,.6);
-  padding:10px 26px;
-  border-radius:22px;
-  box-shadow:0 0 30px rgba(212,175,55,.8);
+  background:rgba(0,0,0,.7);
+  padding:12px 20px;
+  border-radius:20px;
+  box-shadow:0 0 25px rgba(212,175,55,.8);
 }
-form{
-  max-width:600px;
-  margin:25px auto;
+
+/* كلمة المرور */
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
   display:flex;
-  gap:12px;
   justify-content:center;
+  align-items:center;
+  z-index:9999;
+  padding:10px;
 }
-form input, form button{
-  padding:10px 14px;
+.modal{
+  background:#111;
+  padding:30px 20px;
+  border-radius:20px;
+  box-shadow:0 0 35px #d4af37;
+  text-align:center;
+  width:100%;
+  max-width:350px;
+}
+.modal input{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
   border-radius:12px;
   border:none;
   font-size:16px;
 }
+.modal button{
+  margin-top:15px;
+  padding:12px 20px;
+  width:100%;
+  border:none;
+  border-radius:12px;
+  background:#d4af37;
+  font-weight:900;
+  font-size:16px;
+  cursor:pointer;
+  transition:.3s;
+}
+.modal button:hover{
+  background:#ffd700;
+}
+
+/* Form إضافة المنتج */
+form{
+  max-width:100%;
+  margin:20px auto;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:0 10px;
+}
+form input{
+  padding:12px;
+  border-radius:15px;
+  border:none;
+  font-size:16px;
+}
 form button{
+  padding:12px;
+  border-radius:15px;
+  border:none;
+  font-size:16px;
+  font-weight:900;
   background:#d4af37;
   color:#000;
-  font-weight:900;
   cursor:pointer;
+  transition:.3s;
 }
+form button:hover{
+  background:#ffd700;
+}
+
+/* عرض المنتجات */
 .products{
-  max-width:1200px;
-  margin:30px auto;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:15px;
+  padding:0 10px;
 }
 .card{
   position:relative;
-  border-radius:22px;
+  border-radius:15px;
   overflow:hidden;
-  box-shadow:0 20px 40px rgba(212,175,55,.25);
-  transition:0.3s;
+  box-shadow:0 10px 30px rgba(212,175,55,.25);
+  background:#000;
 }
 .card img{
   width:100%;
-  height:260px;
+  height:160px;
   object-fit:cover;
 }
 .overlay{
@@ -76,54 +133,38 @@ form button{
   transition:.5s;
   display:flex;
   align-items:flex-end;
-  padding:15px;
+  justify-content:space-between;
+  padding:8px;
 }
 .card:hover .overlay{opacity:1}
 .overlay h3{
   color:#ffd700;
-  font-size:20px;
+  font-size:14px;
+  font-weight:700;
+  max-width:70%;
 }
 .overlay button{
-  margin-top:8px;
-  padding:6px 18px;
+  padding:6px 12px;
+  border-radius:15px;
   border:1px solid #ffd700;
-  border-radius:22px;
-  background:rgba(0,0,0,0.2);
+  background:rgba(0,0,0,.2);
   color:#ffd700;
   font-weight:700;
+  font-size:12px;
   cursor:pointer;
+  transition:.3s;
 }
-.modal-bg{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+.overlay button:hover{
+  background:rgba(212,175,55,0.8);
+  color:#000;
 }
-.modal{
-  background:#000;
-  padding:25px 35px;
-  border-radius:22px;
-  box-shadow:0 0 30px #d4af37;
-  text-align:center;
-}
-.modal input{
-  padding:10px;
-  margin-top:12px;
-  width:200px;
-  border-radius:12px;
-  border:none;
-}
-.modal button{
-  margin-top:12px;
-  padding:10px 20px;
-  border:none;
-  border-radius:12px;
-  background:#d4af37;
-  font-weight:900;
-  cursor:pointer;
+
+/* Responsive adjustments */
+@media(max-width:480px){
+  header h1{font-size:20px; padding:10px 15px;}
+  form input, form button{font-size:14px; padding:10px;}
+  .overlay h3{font-size:12px;}
+  .overlay button{font-size:10px; padding:5px 8px;}
 }
 </style>
 </head>
@@ -131,15 +172,14 @@ form button{
 <body>
 
 <header>
-  <h1>لوحة إضافة المنتجات المطورة أم الحارث 🎀💎</h1>
+  <h1>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</h1>
 </header>
 
 <!-- نافذة كلمة المرور -->
 <div class="modal-bg" id="passwordModal">
   <div class="modal">
-    <h2>أدخل كلمة المرور</h2>
+    <h2>أدخل كلمة المرور للوصول للوحة الإدارة</h2>
     <input type="password" id="adminPassword" placeholder="كلمة المرور">
-    <br>
     <button id="loginBtn">دخول</button>
   </div>
 </div>
@@ -157,7 +197,7 @@ form button{
 <script type="module">
 import { db, ref, push, onValue, remove } from './firebase.js';
 
-// 🔑 كلمة المرور
+// كلمة المرور
 const PASSWORD = "AmHarith2026";
 
 const modal = document.getElementById("passwordModal");

@@ -4,23 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>𐙚 أم نوسه للبقلاوة 𐙚</title>
-<meta name="description" content="صفحة عرض الحلويات والمحتوى الخاص بي بشكل عصري.">
-
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="𐙚 أم نوسه للبقلاوة 𐙚">
-<meta property="og:description" content="صفحة عرض الحلويات والمحتوى الخاص بي بشكل عصري.">
-<meta property="og:image" content="https://h.top4top.io/p_3672puilc1.jpg">
-<meta property="og:url" content="https://mopnh.github.io/Am-noosa-/">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="𐙚 أم نوسه للبقلاوة 𐙚">
-<meta name="twitter:description" content="صفحة عرض الحلويات والمحتوى الخاص بي بشكل عصري.">
-<meta name="twitter:image" content="https://h.top4top.io/p_3672puilc1.jpg">
-
-<!-- favicon -->
-<link rel="icon" href="https://h.top4top.io/p_3672spbwx0.jpg" type="image/png">
 
 <style>
 *{
@@ -217,7 +200,8 @@ footer{
 
 <section class="container">
 
-<div class="products">
+<div class="products" id="productsContainer">
+  <!-- المنتجات الحالية محفوظة كما هي -->
   <div class="card"><img src="https://k.top4top.io/p_3672h4iqx1.jpg"><div class="overlay"><div><h3>بقلاوة فاخرة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
   <div class="card"><img src="https://a.top4top.io/p_3672mjfqq3.jpg"><div class="overlay"><div><h3>بقلاوة بالمكسرات</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
   <div class="card"><img src="https://l.top4top.io/p_3672kvs1b2.jpg"><div class="overlay"><div><h3>بقلاوة فاخرة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
@@ -249,6 +233,36 @@ footer{
 <footer>
 © 2026 𐙚 أم نوسه للبقلاوة 𐙚 – جميع الحقوق محفوظة
 </footer>
+
+<!-- Firebase JS Loader -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.6.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const container = document.getElementById("productsContainer");
+
+onValue(ref(db, "products"), snapshot => {
+    snapshot.forEach(child => {
+        const prod = child.val();
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<img src="${prod.image}"><div class="overlay"><div><h3>${prod.name}</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div>`;
+        container.appendChild(card);
+    });
+});
+</script>
 
 </body>
 </html>

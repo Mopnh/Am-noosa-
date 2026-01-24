@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة إدارة المنتجات</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>لوحة إدارة المنتجات</h1>
+
+<form id="addProductForm">
+  <input type="text" id="productName" placeholder="اسم المنتج" required>
+  <input type="text" id="productImage" placeholder="رابط صورة المنتج" required>
+  <button type="submit">إضافة المنتج</button>
+</form>
+
+<div class="products-list" id="productsList"></div>
+
+<script type="module">
+import { db, ref, push, onValue, remove } from './firebase.js';
+
+const form = document.getElementById("addProductForm");
+const nameInput = document.getElementById("productName");
+const imageInput = document.getElementById("productImage");
+const productsList = document.getElementById("productsList");
+
+form.addEventListener("submit", e => {
+    e.preventDefault();
+    push(ref(db,"products"), { name: nameInput.value, image: imageInput.value });
+    nameInput.value = "";
+    imageInput.value = "";
+});
+
+onValue(ref(db,"products"), snapshot => {
+    productsList.innerHTML = "";
+    snapshot.forEach(child => {
+        const prod = child.val();
+        const div = document.createElement("div");
+        div.className = "product-item";
+        div.innerHTML = `<img src="${prod.image}"><span>${prod.name}</span><button class="delete-btn">حذف</button>`;
+        div.querySelector(".delete-btn").onclick = () => remove(ref(db,"products/"+child.key));
+        productsList.appendChild(div);
+    });
+});
+</script>
+
+</body>
+</html>

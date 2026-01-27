@@ -4,18 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</title>
-<!-- نفس CSS الذي أرسلته سابقًا -->
+
 <style>
-/* ... احتفظ بكل ستايل admin الأصلي كما هو ... */
+/* CSS كامل صفحة الإدارة كما كان عندك */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{background:#111 url("https://f.top4top.io/p_3674fjruu0.jpg") center/cover no-repeat;color:#fff;padding-bottom:40px;}
+header{text-align:center;padding:15px 0;}
+header h1{font-size:24px;color:#d4af37;background:rgba(0,0,0,.7);padding:12px 20px;border-radius:20px;box-shadow:0 0 25px rgba(212,175,55,.8);}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.95);display:flex;justify-content:center;align-items:center;z-index:9999;padding:10px;}
+.modal{background:#111;padding:30px 20px;border-radius:20px;box-shadow:0 0 35px #d4af37;text-align:center;width:100%;max-width:350px;}
+.modal input{width:100%;padding:12px;margin-top:15px;border-radius:12px;border:none;font-size:16px;}
+.modal button{margin-top:15px;padding:12px 20px;width:100%;border:none;border-radius:12px;background:#d4af37;font-weight:900;font-size:16px;cursor:pointer;transition:.3s;}
+.modal button:hover{background:#ffd700;}
+form{max-width:100%;margin:20px auto;display:flex;flex-direction:column;gap:12px;padding:0 10px;}
+form input{padding:12px;border-radius:15px;border:none;font-size:16px;}
+form button{padding:12px;border-radius:15px;border:none;font-size:16px;font-weight:900;background:#d4af37;color:#000;cursor:pointer;transition:.3s;}
+form button:hover{background:#ffd700;}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px;padding:0 10px;}
+.card{position:relative;border-radius:15px;overflow:hidden;box-shadow:0 10px 30px rgba(212,175,55,.25);background:#000;}
+.card img{width:100%;height:160px;object-fit:cover;}
+.overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.85), transparent);opacity:0;transition:.5s;display:flex;align-items:flex-end;justify-content:space-between;padding:8px;}
+.card:hover .overlay{opacity:1;}
+.overlay h3{color:#ffd700;font-size:14px;font-weight:700;max-width:70%;}
+.overlay button{padding:6px 12px;border-radius:15px;border:1px solid #ffd700;background:rgba(0,0,0,.2);color:#ffd700;font-weight:700;font-size:12px;cursor:pointer;transition:.3s;}
+.overlay button:hover{background:rgba(212,175,55,0.8);color:#000;}
+@media(max-width:480px){header h1{font-size:20px;padding:10px 15px;}form input,form button{font-size:14px;padding:10px;} .overlay h3{font-size:12px;} .overlay button{font-size:10px;padding:5px 8px;}}
 </style>
 </head>
+
 <body>
 
-<header>
-<h1>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</h1>
-</header>
+<header><h1>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</h1></header>
 
-<!-- نافذة كلمة المرور -->
 <div class="modal-bg" id="passwordModal">
   <div class="modal">
     <h2>أدخل كلمة المرور للوصول للوحة الإدارة</h2>
@@ -24,25 +44,21 @@
   </div>
 </div>
 
-<!-- نموذج إضافة المنتج -->
 <form id="addProductForm">
   <input type="text" id="productName" placeholder="اسم المنتج" required>
   <input type="text" id="productImage" placeholder="رابط صورة المنتج" required>
   <button type="submit">إضافة المنتج</button>
 </form>
 
-<!-- عرض المنتجات -->
 <div class="products" id="productsList"></div>
 
 <script type="module">
-import { db, ref, push, onValue, remove } from './firebase.js';
+import { db, ref, push, onValue, remove, update } from './firebase.js';
 
 const PASSWORD = "AmHarith2026";
-
 const modal = document.getElementById("passwordModal");
 const loginBtn = document.getElementById("loginBtn");
 const passwordInput = document.getElementById("adminPassword");
-
 const form = document.getElementById("addProductForm");
 const nameInput = document.getElementById("productName");
 const imageInput = document.getElementById("productImage");
@@ -57,12 +73,13 @@ loginBtn.addEventListener("click", () => {
     form.style.display = "flex";
     productsList.style.display = "grid";
     loadProducts();
-  }else{
+  } else {
     alert("كلمة المرور خاطئة!");
     passwordInput.value = "";
   }
 });
 
+// تحميل المنتجات من Firebase
 function loadProducts(){
   onValue(ref(db,"products"), snapshot => {
     productsList.innerHTML = "";
@@ -74,14 +91,35 @@ function loadProducts(){
         <img src="${prod.image}">
         <div class="overlay">
           <h3>${prod.name}</h3>
-          <button class="delete-btn">حذف</button>
+          <div>
+            <button class="edit-btn">تعديل</button>
+            <button class="delete-btn">حذف</button>
+          </div>
         </div>`;
-      card.querySelector(".delete-btn").onclick = () => remove(ref(db,"products/"+child.key));
+
+      const editBtn = card.querySelector(".edit-btn");
+      const deleteBtn = card.querySelector(".delete-btn");
+
+      editBtn.onclick = () => {
+        const newName = prompt("اسم المنتج الجديد:", prod.name);
+        const newImage = prompt("رابط الصورة الجديد:", prod.image);
+        if(newName && newImage){
+          update(ref(db,"products/"+child.key), { name:newName, image:newImage });
+        }
+      };
+
+      deleteBtn.onclick = () => {
+        if(confirm("هل أنت متأكد من حذف هذا المنتج؟")){
+          remove(ref(db,"products/"+child.key));
+        }
+      };
+
       productsList.appendChild(card);
     });
   });
 }
 
+// إضافة منتج جديد
 form.addEventListener("submit", e => {
   e.preventDefault();
   push(ref(db,"products"), { name: nameInput.value, image: imageInput.value });

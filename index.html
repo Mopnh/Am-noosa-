@@ -186,7 +186,8 @@ footer{background:#000;text-align:center;padding:20px;color:#777}
 </div>
 
 <!-- PRODUCTS -->
-<div class="products">
+<div class="products" id="productsList">
+  <!-- المنتجات القديمة ثابتة تبقى -->
   <div class="card"><img src="https://k.top4top.io/p_3672h4iqx1.jpg"><div class="overlay"><div><h3>بقلاوة فاخرة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
   <div class="card"><img src="https://a.top4top.io/p_3672mjfqq3.jpg"><div class="overlay"><div><h3>بقلاوة بالمكسرات</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
   <div class="card"><img src="https://l.top4top.io/p_3672kvs1b2.jpg"><div class="overlay"><div><h3>بقلاوة فاخرة</h3><a href="https://wa.me/218928486845">اطلب الآن</a></div></div></div>
@@ -218,6 +219,34 @@ footer{background:#000;text-align:center;padding:20px;color:#777}
 <footer>
 © 2026 𐙚 أم نوسه للبقلاوة 𐙚 – جميع الحقوق محفوظة
 </footer>
+
+<script type="module">
+import { db, ref, onValue } from './firebase.js';
+
+const productsList = document.getElementById('productsList');
+
+// تحميل المنتجات الجديدة من Firebase وإضافتها بعد المنتجات القديمة
+onValue(ref(db, "products"), snapshot => {
+  snapshot.forEach(child => {
+    const prod = child.val();
+
+    // تحقق لمنع تكرار المنتجات القديمة (حسب رابط الصورة)
+    if(!Array.from(productsList.querySelectorAll('img')).some(img => img.src === prod.image)){
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${prod.image}">
+        <div class="overlay">
+          <div>
+            <h3>${prod.name}</h3>
+            <a href="https://wa.me/218928486845">اطلب الآن</a>
+          </div>
+        </div>`;
+      productsList.appendChild(card);
+    }
+  });
+});
+</script>
 
 <script>
 const img1=document.getElementById("promoImg1");

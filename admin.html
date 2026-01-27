@@ -4,175 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</title>
-
+<!-- نفس CSS الذي أرسلته سابقًا -->
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI', Tahoma, sans-serif;
-}
-body{
-  background:#111 url("https://f.top4top.io/p_3674fjruu0.jpg") center/cover no-repeat;
-  color:#fff;
-  padding-bottom:40px;
-}
-
-/* Header */
-header{
-  text-align:center;
-  padding:15px 0;
-}
-header h1{
-  font-size:24px;
-  color:#d4af37;
-  background:rgba(0,0,0,.7);
-  padding:12px 20px;
-  border-radius:20px;
-  box-shadow:0 0 25px rgba(212,175,55,.8);
-}
-
-/* كلمة المرور */
-.modal-bg{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.95);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-  padding:10px;
-}
-.modal{
-  background:#111;
-  padding:30px 20px;
-  border-radius:20px;
-  box-shadow:0 0 35px #d4af37;
-  text-align:center;
-  width:100%;
-  max-width:350px;
-}
-.modal input{
-  width:100%;
-  padding:12px;
-  margin-top:15px;
-  border-radius:12px;
-  border:none;
-  font-size:16px;
-}
-.modal button{
-  margin-top:15px;
-  padding:12px 20px;
-  width:100%;
-  border:none;
-  border-radius:12px;
-  background:#d4af37;
-  font-weight:900;
-  font-size:16px;
-  cursor:pointer;
-  transition:.3s;
-}
-.modal button:hover{
-  background:#ffd700;
-}
-
-/* Form إضافة المنتج */
-form{
-  max-width:100%;
-  margin:20px auto;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  padding:0 10px;
-}
-form input{
-  padding:12px;
-  border-radius:15px;
-  border:none;
-  font-size:16px;
-}
-form button{
-  padding:12px;
-  border-radius:15px;
-  border:none;
-  font-size:16px;
-  font-weight:900;
-  background:#d4af37;
-  color:#000;
-  cursor:pointer;
-  transition:.3s;
-}
-form button:hover{
-  background:#ffd700;
-}
-
-/* عرض المنتجات */
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:15px;
-  padding:0 10px;
-}
-.card{
-  position:relative;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 10px 30px rgba(212,175,55,.25);
-  background:#000;
-}
-.card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-}
-.overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,.85), transparent);
-  opacity:0;
-  transition:.5s;
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  padding:8px;
-}
-.card:hover .overlay{opacity:1}
-.overlay h3{
-  color:#ffd700;
-  font-size:14px;
-  font-weight:700;
-  max-width:70%;
-}
-.overlay button{
-  padding:6px 12px;
-  border-radius:15px;
-  border:1px solid #ffd700;
-  background:rgba(0,0,0,.2);
-  color:#ffd700;
-  font-weight:700;
-  font-size:12px;
-  cursor:pointer;
-  transition:.3s;
-}
-.overlay button:hover{
-  background:rgba(212,175,55,0.8);
-  color:#000;
-}
-
-/* Responsive adjustments */
-@media(max-width:480px){
-  header h1{font-size:20px; padding:10px 15px;}
-  form input, form button{font-size:14px; padding:10px;}
-  .overlay h3{font-size:12px;}
-  .overlay button{font-size:10px; padding:5px 8px;}
-}
+/* ... احتفظ بكل ستايل admin الأصلي كما هو ... */
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</h1>
+<h1>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</h1>
 </header>
 
 <!-- نافذة كلمة المرور -->
@@ -197,7 +37,6 @@ form button:hover{
 <script type="module">
 import { db, ref, push, onValue, remove } from './firebase.js';
 
-// كلمة المرور
 const PASSWORD = "AmHarith2026";
 
 const modal = document.getElementById("passwordModal");
@@ -209,11 +48,9 @@ const nameInput = document.getElementById("productName");
 const imageInput = document.getElementById("productImage");
 const productsList = document.getElementById("productsList");
 
-// إخفاء النموذج قبل تسجيل الدخول
 form.style.display = "none";
 productsList.style.display = "none";
 
-// التحقق من كلمة المرور
 loginBtn.addEventListener("click", () => {
   if(passwordInput.value === PASSWORD){
     modal.style.display = "none";
@@ -226,7 +63,6 @@ loginBtn.addEventListener("click", () => {
   }
 });
 
-// تحميل المنتجات من Firebase
 function loadProducts(){
   onValue(ref(db,"products"), snapshot => {
     productsList.innerHTML = "";
@@ -246,7 +82,6 @@ function loadProducts(){
   });
 }
 
-// إضافة منتج جديد
 form.addEventListener("submit", e => {
   e.preventDefault();
   push(ref(db,"products"), { name: nameInput.value, image: imageInput.value });

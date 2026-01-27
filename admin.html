@@ -6,7 +6,6 @@
 <title>لوحة إدارة المنتجات المطورة أم الحارث 🎀💎</title>
 
 <style>
-/* CSS كامل صفحة الإدارة كما كان عندك */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
 body{background:#111 url("https://f.top4top.io/p_3674fjruu0.jpg") center/cover no-repeat;color:#fff;padding-bottom:40px;}
 header{text-align:center;padding:15px 0;}
@@ -40,7 +39,7 @@ form button:hover{background:#ffd700;}
   <div class="modal">
     <h2>أدخل كلمة المرور للوصول للوحة الإدارة</h2>
     <input type="password" id="adminPassword" placeholder="كلمة المرور">
-    <button id="loginBtn">دخول</button>
+    <button type="button" id="loginBtn">دخول</button>
   </div>
 </div>
 
@@ -56,17 +55,21 @@ form button:hover{background:#ffd700;}
 import { db, ref, push, onValue, remove, update } from './firebase.js';
 
 const PASSWORD = "AmHarith2026";
+
 const modal = document.getElementById("passwordModal");
 const loginBtn = document.getElementById("loginBtn");
 const passwordInput = document.getElementById("adminPassword");
+
 const form = document.getElementById("addProductForm");
 const nameInput = document.getElementById("productName");
 const imageInput = document.getElementById("productImage");
 const productsList = document.getElementById("productsList");
 
+// إخفاء لوحة الإدارة قبل تسجيل الدخول
 form.style.display = "none";
 productsList.style.display = "none";
 
+// تحقق من كلمة المرور
 loginBtn.addEventListener("click", () => {
   if(passwordInput.value === PASSWORD){
     modal.style.display = "none";
@@ -79,7 +82,7 @@ loginBtn.addEventListener("click", () => {
   }
 });
 
-// تحميل المنتجات من Firebase
+// تحميل المنتجات من Firebase وعرضها
 function loadProducts(){
   onValue(ref(db,"products"), snapshot => {
     productsList.innerHTML = "";
@@ -100,6 +103,7 @@ function loadProducts(){
       const editBtn = card.querySelector(".edit-btn");
       const deleteBtn = card.querySelector(".delete-btn");
 
+      // تعديل المنتج
       editBtn.onclick = () => {
         const newName = prompt("اسم المنتج الجديد:", prod.name);
         const newImage = prompt("رابط الصورة الجديد:", prod.image);
@@ -108,6 +112,7 @@ function loadProducts(){
         }
       };
 
+      // حذف المنتج
       deleteBtn.onclick = () => {
         if(confirm("هل أنت متأكد من حذف هذا المنتج؟")){
           remove(ref(db,"products/"+child.key));

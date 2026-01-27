@@ -1,3 +1,4 @@
+// firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-app.js";
 import { getDatabase, ref, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-database.js";
 
@@ -6,7 +7,7 @@ const firebaseConfig = {
   authDomain: "om-nosa-baklava.firebaseapp.com",
   databaseURL: "https://om-nosa-baklava-default-rtdb.firebaseio.com",
   projectId: "om-nosa-baklava",
-  storageBucket: "om-nosa-baklava.firebasestorage.app",
+  storageBucket: "om-nosa-baklava.appspot.com",
   messagingSenderId: "768849634836",
   appId: "1:768849634836:web:f961dc50cf2caea9ab2901"
 };
